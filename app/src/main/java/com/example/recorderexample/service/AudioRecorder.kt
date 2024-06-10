@@ -1,7 +1,6 @@
 package com.example.recorderexample.service
 
 import android.content.Context
-import android.media.AudioFormat
 import android.media.MediaRecorder
 import android.util.Log
 import com.example.recorderexample.encodeFileToBase64

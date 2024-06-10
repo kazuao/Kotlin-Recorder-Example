@@ -75,7 +75,7 @@ class AudioRecorder2(private val context: Context) {
     }
 }
 
-class AudioPlayer(private val context: Context) {
+class AudioPlayer(context: Context) {
     private var audioTrack: AudioTrack? = null
     private val sampleRate = 16000  // 再生のサンプルレート
     private val channelConfig = AudioFormat.CHANNEL_OUT_MONO  // モノラル出力
@@ -87,6 +87,7 @@ class AudioPlayer(private val context: Context) {
     fun startPlayer() {
         val file = File(outputFile)
         val bytesArray = ByteArray(file.length().toInt())
+        Log.d("AudioPlayer", "$bytesArray")
         audioTrack?.write(bytesArray, 0, bytesArray.size)
         audioTrack = AudioTrack(AudioManager.STREAM_MUSIC, sampleRate, channelConfig, audioFormat, bufferSize, AudioTrack.MODE_STREAM)
         audioTrack?.play()

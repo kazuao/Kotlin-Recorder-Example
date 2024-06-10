@@ -17,15 +17,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.example.recorderexample.service.AudioHelper
 import com.example.recorderexample.service.AudioPlayer
-import com.example.recorderexample.service.AudioRecorder
-import com.example.recorderexample.service.AudioRecorder2
+import com.example.recorderexample.service.RecorderManager
 import com.example.recorderexample.ui.theme.RecorderExampleTheme
 import java.io.File
 
 class MainActivity : ComponentActivity() {
 
-//    private lateinit var audioRecorder: AudioRecorder
-    private lateinit var audioRecorder: AudioRecorder2
     private lateinit var bluetoothAudioManager: AudioHelper
     private lateinit var audioPlayer: AudioPlayer
 
@@ -61,16 +58,21 @@ class MainActivity : ComponentActivity() {
         requestPermissionBluetoothLauncher.launch(Manifest.permission.BLUETOOTH_CONNECT)
     }
 
+    private lateinit var recorderManager: RecorderManager
+//    private lateinit var recorderManager2: RecorderManager2
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         requestPermission()
 
-//        audioRecorder = AudioRecorder(this)
-        audioRecorder = AudioRecorder2(this)
+//        recorderManager = RecorderManager(this)
+//        recorderManager2 = RecorderManager2()
+        audioPlayer = AudioPlayer(this)
+
         bluetoothAudioManager = AudioHelper(this)
         bluetoothAudioManager.routeAudioToBluetooth()
-        audioPlayer = AudioPlayer(this)
+
 
         setContent {
             RecorderExampleTheme {
@@ -78,9 +80,33 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+
+//                    LaunchedEffect(Unit) {
+//                        recorderManager.endRecording.collect { base64 ->
+//                            if (base64.isEmpty()) {
+//                                return@collect
+//                            }
+////                            Log.d("MainActivity", "base64: $base64")
+//                        }
+//                    }
+
+
                     Column {
-                        StartButton(audioRecorder = audioRecorder)
-                        StopButton(audioRecorder = audioRecorder, audioPlayer = audioPlayer)
+//                        StartButton(audioRecorder = recorderManager)
+//                        StopButton(audioRecorder = recorderManager, audioPlayer = audioPlayer)
+
+//                        Button(
+//                            onClick = {
+//                                if (recorderManager2.isRecording) {
+//                                    recorderManager2.stopRecording()
+//                                    recorderManager2.playRecording()
+//                                } else {
+//                                    recorderManager2.startRecording(getExternalFilesDir(Environment.DIRECTORY_MUSIC)!!)
+//                                }
+//                            }
+//                        ) {
+//                            Text(text = if (recorderManager2.isRecording) "stop" else "start")
+//                        }
                     }
                 }
             }
@@ -95,7 +121,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun StartButton(audioRecorder: AudioRecorder2) {
+fun StartButton(audioRecorder: RecorderManager) {
     Button(
         onClick = {
             audioRecorder.startRecording()
@@ -106,14 +132,14 @@ fun StartButton(audioRecorder: AudioRecorder2) {
 }
 
 @Composable
-fun StopButton(audioRecorder: AudioRecorder2, audioPlayer: AudioPlayer) {
+fun StopButton(audioRecorder: RecorderManager, audioPlayer: AudioPlayer) {
     Button(
         onClick = {
             audioRecorder.stopRecording()
-            val a = audioRecorder.getOutputFile()
-            Log.d("hoge", a)
+//            val a = audioRecorder.getOutputFile()
+//            Log.d("hoge", a)
 
-            audioPlayer.startPlayer()
+//            audioPlayer.startPlayer()
 
 //            MediaPlayer().apply {
 //                setDataSource(audioRecorder.getOutputFile())
